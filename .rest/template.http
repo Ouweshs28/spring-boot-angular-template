@@ -1,0 +1,6 @@
+POST {{host}}/api/user
+Content-Type: application/json
+
+{
+  "gender": "MALE"
+}

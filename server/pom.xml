@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>project-template-parent</artifactId>
+		<groupId>com.project.template</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>server</artifactId>
+	<packaging>pom</packaging>
+
+	<properties>
+		<build.final-name>project-template</build.final-name>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<com.mysema.maven.version>1.1.3</com.mysema.maven.version>
+		<io.swagger-codegen-maven-plugin.version>3.0.34</io.swagger-codegen-maven-plugin.version>
+		<io.springfox-core.version>3.0.0</io.springfox-core.version>
+		<org.openapi-generator-maven-plugin.version>6.0.1</org.openapi-generator-maven-plugin.version>
+		<org.projectlombok.version>1.18.24</org.projectlombok.version>
+		<org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
+	</properties>
+
+	<modules>
+		<module>project-template-persistence</module>
+		<module>project-template-service</module>
+		<module>project-template-rest</module>
+		<module>project-template-image</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<delimiters>
+						<delimiter>@</delimiter>
+					</delimiters>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.openapitools</groupId>
+					<artifactId>openapi-generator-maven-plugin</artifactId>
+					<version>${org.openapi-generator-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+							<configuration>
+								<apiPackage>com.project.template.api</apiPackage>
+								<generateApis>false</generateApis>
+								<generateApiTests>false</generateApiTests>
+								<generateApiDocumentation>false</generateApiDocumentation>
+								<generatorName>spring</generatorName>
+								<inputSpec>${project.basedir}/../project-template-openapi/openapi.yaml</inputSpec>
+								<modelPackage>com.project.template.model</modelPackage>
+								<modelNameSuffix>ApiBean</modelNameSuffix>
+								<generateModels>false</generateModels>
+								<generateModelTests>false</generateModelTests>
+								<generateModelDocumentation>false</generateModelDocumentation>
+								<generateSupportingFiles>false</generateSupportingFiles>
+								<verbose>false</verbose>
+								<configOptions>
+									<dateLibrary>java8</dateLibrary>
+									<interfaceOnly>true</interfaceOnly>
+									<openApiNullable>false</openApiNullable>
+									<useBeanValidation>false</useBeanValidation>
+								</configOptions>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>
