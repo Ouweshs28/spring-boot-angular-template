@@ -114,7 +114,6 @@ class UserServiceImplTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(userEntity));
         doNothing().when(userRepository).deleteById(anyLong());
 
-
         userServiceImpl.deleteUser(userEntity.getId());
         verify(userRepository).findById(userEntity.getId());
         verify(userRepository).deleteById(userEntity.getId());
@@ -161,15 +160,15 @@ class UserServiceImplTest {
 
     @Test
     void testFindAllUsers() {
-        String criteria = "john";
+        String criteria = "Seeroo";
         String gender = "MALE";
         int page = 0;
         int size = 10;
         PageRequest pageRequest = PageRequest.of(page, size);
 
         List<UserEntity> userList = Arrays.asList(
-                new UserEntity(1L, "John", "Doe", GenderEnum.MALE),
-                new UserEntity(3L, "John", "Smith", GenderEnum.MALE)
+                new UserEntity(1L, "Ouwesh", "Seeroo", GenderEnum.MALE),
+                new UserEntity(3L, "Shaad", "Seeroo", GenderEnum.MALE)
         );
         Page<UserEntity> pageResult = new PageImpl<>(userList, pageRequest, userList.size());
 
