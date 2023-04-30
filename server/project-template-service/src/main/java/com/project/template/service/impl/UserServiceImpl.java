@@ -24,6 +24,8 @@ import static com.project.template.persistence.entity.QUserEntity.userEntity;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final String USER_ID_NOT_FOUND = "UserId :%dnot found";
+
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserCreateUpdateRequestApiBean userUpdateRequest) {
         UserEntity user = userRepository.findById(userUpdateRequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("UserId :" + userUpdateRequest.getId() + "not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userUpdateRequest.getId())));
         userMapper.mapToUpdateUserEntity(user, userUpdateRequest);
         userRepository.save(user);
     }
@@ -52,14 +54,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("UserId :" + userId + "not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
         userRepository.deleteById(userId);
     }
 
     @Override
     public UserCreateUpdateRequestApiBean findUserById(Long userId) {
         return userRepository.findById(userId).map(userMapper::mapToUserCreateOrUpdateRequest)
-                .orElseThrow(() -> new ResourceNotFoundException("UserId :" + userId + "not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
     }
 
     @Override

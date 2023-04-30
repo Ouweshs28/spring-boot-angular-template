@@ -24,7 +24,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
 
         UserEntity userOuwesh = new UserEntity(1L, "Ouwesh", "Seeroo", MALE);
         UserEntity userSam = new UserEntity(2L, "Sam", "Johnstone", MALE);
