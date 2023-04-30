@@ -50,6 +50,9 @@
 				<executions>
 					<execution>
 						<configuration>
+							<configOptions>
+								<useJakartaEe>true</useJakartaEe>
+							</configOptions>
 							<generateApis>true</generateApis>
 							<generateSupportingFiles>true</generateSupportingFiles>
 							<supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>

@@ -3,9 +3,8 @@ package com.project.template.persistence.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
-
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
