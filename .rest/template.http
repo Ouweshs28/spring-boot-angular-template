@@ -4,3 +4,9 @@ Content-Type: application/json
 {
   "gender": "MALE"
 }
+
+###
+GET http://localhost:8080/api/user/findAll
+Accept: application/json
+
+###
