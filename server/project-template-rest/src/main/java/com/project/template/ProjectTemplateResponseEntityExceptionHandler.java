@@ -1,5 +1,6 @@
 package com.project.template;
 
+import com.project.template.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +40,11 @@ public class ProjectTemplateResponseEntityExceptionHandler extends ResponseEntit
         return handleExceptionInternal(e, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
+        return handleExceptionInternal(e, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
     @Override
     @NonNull
     protected ResponseEntity<Object> handleExceptionInternal(@NonNull Exception ex, @Nullable Object additionalBody, @NonNull HttpHeaders headers, HttpStatusCode status, @NonNull WebRequest request) {
@@ -54,7 +60,7 @@ public class ProjectTemplateResponseEntityExceptionHandler extends ResponseEntit
         if (additionalBody instanceof Map<?, ?> additionalBodyAsMap) {
             additionalBodyAsMap.forEach((key, value) -> body.put(String.valueOf(key), value));
         }
-        return Objects.requireNonNull(super.handleExceptionInternal(ex, body, headers, status, request));
+        return Objects.requireNonNull(super.handleExceptionInternal(ex, body, headers, httpStatus, request));
     }
 
     private ResponseEntity<Object> handleExceptionInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

@@ -2,11 +2,30 @@ POST {{host}}/api/user
 Content-Type: application/json
 
 {
+  "firstName": "John",
+  "lastName": "Doe",
   "gender": "MALE"
 }
 
 ###
-GET http://localhost:8080/api/user/findAll
+
+PUT {{host}}/api/user
+Content-Type: application/json
+
+{
+  "id": 1,
+  "firstName": "Muhummad Ouwesh",
+  "lastName": "Seeroo",
+  "gender": "MALE"
+}
+
+###
+
+GET {{host}}/api/user/6
+Accept: application/json
+
+###
+GET {{host}}/api/user/findAll
 Accept: application/json
 
 ###

@@ -11,6 +11,7 @@ import com.project.template.persistence.repository.UserRepository;
 import com.project.template.service.UserService;
 import com.querydsl.core.BooleanBuilder;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ import static com.project.template.persistence.entity.QUserEntity.userEntity;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final String USER_ID_NOT_FOUND = "UserId :%dnot found";
+    private static final String USER_ID_NOT_FOUND = "UserId :%d not found";
 
     private final UserRepository userRepository;
 
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
             predicate.and(userEntity.gender.eq(GenderEnum.valueOf(gender)));
         }
 
-        var result = userRepository.findAll(predicate, pageRequest);
+        Page<UserEntity> result = userRepository.findAll(predicate, pageRequest);
 
         return pageMapper.mapToUserCreateOrUpdateRequest(result);
 
