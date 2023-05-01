@@ -1,9 +1,9 @@
 package com.project.template.persistence.entity;
 
 import com.project.template.persistence.enumeration.GenderEnum;
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 
 /**
  * @author Ouweshs28

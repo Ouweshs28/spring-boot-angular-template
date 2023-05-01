@@ -1,9 +1,11 @@
 package com.project.template;
 
+import com.project.template.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -14,13 +16,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.BINDING_ERRORS;
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 import static org.springframework.boot.web.error.ErrorAttributeOptions.of;
 
 /**
- * @author Robert Turnbull
+ * @author Ouweshs28
  */
 @Slf4j
 @ControllerAdvice("com.project.template.rest")
@@ -37,19 +40,27 @@ public class ProjectTemplateResponseEntityExceptionHandler extends ResponseEntit
         return handleExceptionInternal(e, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
+        return handleExceptionInternal(e, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
     @Override
     @NonNull
-    protected ResponseEntity<Object> handleExceptionInternal(@NonNull Exception ex, @Nullable Object additionalBody, @NonNull HttpHeaders headers, HttpStatus status, @NonNull WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(@NonNull Exception ex, @Nullable Object additionalBody, @NonNull HttpHeaders headers, HttpStatusCode status, @NonNull WebRequest request) {
         Map<String, Object> body = errorAttributes.getErrorAttributes(request, of(BINDING_ERRORS, MESSAGE));
-        body.put("error", status.getReasonPhrase());
+
+        HttpStatus httpStatus = HttpStatus.valueOf(status.value());
+        String reasonPhrase = httpStatus.getReasonPhrase();
+
+        body.put("error", reasonPhrase);
         body.put("path", request.getDescription(false));
         body.put("status", status.value());
 
-        if (additionalBody instanceof Map) {
-            Map<?, ?> additionalBodyAsMap = (Map<?, ?>) additionalBody;
+        if (additionalBody instanceof Map<?, ?> additionalBodyAsMap) {
             additionalBodyAsMap.forEach((key, value) -> body.put(String.valueOf(key), value));
         }
-        return super.handleExceptionInternal(ex, body, headers, status, request);
+        return Objects.requireNonNull(super.handleExceptionInternal(ex, body, headers, httpStatus, request));
     }
 
     private ResponseEntity<Object> handleExceptionInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
