@@ -1,10 +1,8 @@
 package com.project.template.service.impl;
 
+import com.project.template.dto.CreateUpdateUserRequest;
 import com.project.template.exception.ResourceNotFoundException;
-import com.project.template.mapper.PageMapper;
 import com.project.template.mapper.UserMapper;
-import com.project.template.model.PageApiBean;
-import com.project.template.model.UserCreateUpdateRequestApiBean;
 import com.project.template.persistence.entity.UserEntity;
 import com.project.template.persistence.enumeration.GenderEnum;
 import com.project.template.persistence.repository.UserRepository;
@@ -31,21 +29,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    private final PageMapper pageMapper;
-
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PageMapper pageMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
-        this.pageMapper = pageMapper;
     }
 
     @Override
-    public Long createUser(UserCreateUpdateRequestApiBean createUserRequest) {
+    public Long createUser(CreateUpdateUserRequest createUserRequest) {
         return userRepository.save(userMapper.mapToUserEntity(createUserRequest)).getId();
     }
 
     @Override
-    public void updateUser(UserCreateUpdateRequestApiBean userUpdateRequest) {
+    public void updateUser(CreateUpdateUserRequest userUpdateRequest) {
         UserEntity user = userRepository.findById(userUpdateRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userUpdateRequest.getId())));
         userMapper.mapToUpdateUserEntity(user, userUpdateRequest);
@@ -60,13 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserCreateUpdateRequestApiBean findUserById(Long userId) {
+    public CreateUpdateUserRequest findUserById(Long userId) {
         return userRepository.findById(userId).map(userMapper::mapToUserCreateOrUpdateRequest)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
     }
 
     @Override
-    public PageApiBean findAllUsers(String criteria, String gender, PageRequest pageRequest) {
+    public Page<CreateUpdateUserRequest> findAllUsers(String criteria, String gender, PageRequest pageRequest) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if (Objects.nonNull(criteria)) {
@@ -79,9 +74,7 @@ public class UserServiceImpl implements UserService {
             predicate.and(userEntity.gender.eq(GenderEnum.valueOf(gender)));
         }
 
-        Page<UserEntity> result = userRepository.findAll(predicate, pageRequest);
-
-        return pageMapper.mapToUserCreateOrUpdateRequest(result);
+        return userRepository.findAll(predicate, pageRequest).map(userMapper::mapToUserCreateOrUpdateRequest);
 
     }
 

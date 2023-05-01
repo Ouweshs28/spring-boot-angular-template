@@ -1,6 +1,6 @@
 package com.project.template.mapper;
 
-import com.project.template.model.UserCreateUpdateRequestApiBean;
+import com.project.template.dto.CreateUpdateUserRequest;
 import com.project.template.persistence.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,10 +13,10 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
-    UserEntity mapToUserEntity(UserCreateUpdateRequestApiBean createUserRequest);
+    UserEntity mapToUserEntity(CreateUpdateUserRequest createUserRequest);
 
-    UserCreateUpdateRequestApiBean mapToUserCreateOrUpdateRequest(UserEntity user);
+    CreateUpdateUserRequest mapToUserCreateOrUpdateRequest(UserEntity user);
 
-    void mapToUpdateUserEntity(@MappingTarget UserEntity user, UserCreateUpdateRequestApiBean userUpdateRequest);
+    void mapToUpdateUserEntity(@MappingTarget UserEntity user, CreateUpdateUserRequest userUpdateRequest);
 
 }

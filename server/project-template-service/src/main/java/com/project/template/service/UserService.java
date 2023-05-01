@@ -1,7 +1,7 @@
 package com.project.template.service;
 
-import com.project.template.model.PageApiBean;
-import com.project.template.model.UserCreateUpdateRequestApiBean;
+import com.project.template.dto.CreateUpdateUserRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 /**
@@ -9,14 +9,14 @@ import org.springframework.data.domain.PageRequest;
  */
 public interface UserService {
 
-    Long createUser(UserCreateUpdateRequestApiBean createUserRequest);
+    Long createUser(CreateUpdateUserRequest createUserRequest);
 
-    void updateUser(UserCreateUpdateRequestApiBean userUpdateRequest);
+    void updateUser(CreateUpdateUserRequest userUpdateRequest);
 
     void deleteUser(Long userId);
 
-    UserCreateUpdateRequestApiBean findUserById(Long userId);
+    CreateUpdateUserRequest findUserById(Long userId);
 
-    PageApiBean findAllUsers(String criteria, String gender, PageRequest pageRequest);
+    Page<CreateUpdateUserRequest> findAllUsers(String criteria, String gender, PageRequest pageRequest);
 
 }

@@ -1,23 +1,13 @@
 package com.project.template.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
+import com.project.template.dto.CreateUpdateUserRequest;
 import com.project.template.exception.ResourceNotFoundException;
-import com.project.template.mapper.PageMapper;
 import com.project.template.mapper.UserMapper;
-import com.project.template.model.PageApiBean;
-import com.project.template.model.UserCreateUpdateRequestApiBean;
 import com.project.template.persistence.entity.UserEntity;
-import com.project.template.persistence.enumeration.GenderEnum;
 import com.project.template.persistence.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -30,6 +20,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static com.project.template.persistence.enumeration.GenderEnum.MALE;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+;
+
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class UserServiceImplTest {
@@ -40,21 +41,18 @@ class UserServiceImplTest {
     @Spy
     private UserMapper userMapper;
 
-    @Spy
-    private PageMapper pageMapper;
-
     @InjectMocks
     private UserServiceImpl userServiceImpl;
 
-    private UserCreateUpdateRequestApiBean createUserRequest;
+    private CreateUpdateUserRequest createUserRequest;
 
     @BeforeEach
     void setUp() {
-        createUserRequest = new UserCreateUpdateRequestApiBean();
+        createUserRequest = new CreateUpdateUserRequest();
         createUserRequest.setId(1L);
         createUserRequest.setFirstName("Ouwesh");
         createUserRequest.setLastName("Seeroo");
-        createUserRequest.setGender(UserCreateUpdateRequestApiBean.GenderEnum.MALE);
+        createUserRequest.setGenderEnum(MALE);
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         when(userRepository.save(userEntity)).thenReturn(userEntity);
@@ -78,7 +76,7 @@ class UserServiceImplTest {
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(userEntity));
-        doNothing().when(userMapper).mapToUpdateUserEntity(any(UserEntity.class), any(UserCreateUpdateRequestApiBean.class));
+        doNothing().when(userMapper).mapToUpdateUserEntity(any(UserEntity.class), any(CreateUpdateUserRequest.class));
         when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
         userServiceImpl.updateUser(createUserRequest);
@@ -90,7 +88,7 @@ class UserServiceImplTest {
 
     @Test
     void testUpdateUserWhenDoesNotExist() {
-        UserCreateUpdateRequestApiBean updateUserRequest = new UserCreateUpdateRequestApiBean();
+        CreateUpdateUserRequest updateUserRequest = new CreateUpdateUserRequest();
         updateUserRequest.setId(2L);
         UserEntity userEntity = new UserEntity();
         userEntity.setId(2L);
@@ -134,12 +132,12 @@ class UserServiceImplTest {
 
     @Test
     void findUserByIdWhenExist() {
-        UserCreateUpdateRequestApiBean expectedUser = new UserCreateUpdateRequestApiBean();
+        CreateUpdateUserRequest expectedUser = new CreateUpdateUserRequest();
         expectedUser.setId(1L);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new UserEntity()));
         when(userMapper.mapToUserCreateOrUpdateRequest(any(UserEntity.class))).thenReturn(expectedUser);
 
-        UserCreateUpdateRequestApiBean actualUser = userServiceImpl.findUserById(expectedUser.getId());
+        CreateUpdateUserRequest actualUser = userServiceImpl.findUserById(expectedUser.getId());
 
         assertEquals(expectedUser, actualUser);
         verify(userRepository).findById(expectedUser.getId());
@@ -148,7 +146,7 @@ class UserServiceImplTest {
 
     @Test
     void findUserByIdWhenDoesNotExist() {
-        UserCreateUpdateRequestApiBean expectedUser = new UserCreateUpdateRequestApiBean();
+        CreateUpdateUserRequest expectedUser = new CreateUpdateUserRequest();
         expectedUser.setId(1L);
         when(userRepository.findById(anyLong())).thenThrow(new ResourceNotFoundException("UserId :" + expectedUser.getId() + " not found"));
         when(userMapper.mapToUserCreateOrUpdateRequest(any(UserEntity.class))).thenReturn(expectedUser);
@@ -167,23 +165,21 @@ class UserServiceImplTest {
         PageRequest pageRequest = PageRequest.of(page, size);
 
         List<UserEntity> userList = Arrays.asList(
-                new UserEntity(1L, "Ouwesh", "Seeroo", GenderEnum.MALE),
-                new UserEntity(3L, "Shaad", "Seeroo", GenderEnum.MALE)
+                new UserEntity(1L, "Ouwesh", "Seeroo", MALE),
+                new UserEntity(3L, "Shaad", "Seeroo", MALE)
         );
         Page<UserEntity> pageResult = new PageImpl<>(userList, pageRequest, userList.size());
 
 
         // mock the userRepository and pageMapper
         when(userRepository.findAll(any(BooleanBuilder.class), any(PageRequest.class))).thenReturn(pageResult);
-        when(pageMapper.mapToUserCreateOrUpdateRequest(pageResult)).thenReturn(new PageApiBean());
 
         // call the method being tested
-        PageApiBean result = userServiceImpl.findAllUsers(criteria, gender, pageRequest);
+        Page<CreateUpdateUserRequest> result = userServiceImpl.findAllUsers(criteria, gender, pageRequest);
 
         // verify the userRepository and pageMapper calls
         ArgumentCaptor<BooleanBuilder> predicateCaptor = ArgumentCaptor.forClass(BooleanBuilder.class);
         verify(userRepository).findAll(predicateCaptor.capture(), eq(pageRequest));
-        verify(pageMapper).mapToUserCreateOrUpdateRequest(pageResult);
 
         // verify the result
         assertNotNull(result);
