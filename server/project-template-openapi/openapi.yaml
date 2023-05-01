@@ -4,7 +4,7 @@ info:
   version: '1.0'
   title: Project Template Documentation
 paths:
-  /api/user:
+  /api/users:
     post:
       tags:
         - user
@@ -54,7 +54,31 @@ paths:
           description: User not found
         405:
           description: Validation exception
-  /api/user/{userId}:
+    get:
+      tags:
+        - user
+      summary: search for all users
+      operationId: findAllUsers
+      description: search for all users, the api returns all users if no criteria is provided
+      parameters:
+        - $ref: '#/components/parameters/Criteria'
+        - $ref: '#/components/parameters/Gender'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/SortOrder'
+        - $ref: '#/components/parameters/SortBy'
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+  /api/users/{userId}:
     delete:
       tags:
         - user
@@ -93,31 +117,6 @@ paths:
           description: Forbidden
         404:
           description: Not Found
-  /api/user/findAll:
-    get:
-      tags:
-        - user
-      summary: search for all users
-      operationId: findAllUsers
-      description: search for all users, the api returns all users if no criteria is provided
-      parameters:
-        - $ref: '#/components/parameters/Criteria'
-        - $ref: '#/components/parameters/Gender'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/SortOrder'
-        - $ref: '#/components/parameters/SortBy'
-      responses:
-        200:
-          description: Ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Page'
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
 components:
   schemas:
     UserCreateUpdateRequest:
