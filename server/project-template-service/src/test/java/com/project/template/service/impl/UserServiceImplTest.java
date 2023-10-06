@@ -1,23 +1,17 @@
 package com.project.template.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
 import com.project.template.exception.ResourceNotFoundException;
 import com.project.template.mapper.PageMapper;
 import com.project.template.mapper.UserMapper;
+import com.project.template.model.GenderEnumApiBean;
 import com.project.template.model.PageApiBean;
 import com.project.template.model.UserCreateUpdateRequestApiBean;
 import com.project.template.persistence.entity.UserEntity;
 import com.project.template.persistence.enumeration.GenderEnum;
 import com.project.template.persistence.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -29,6 +23,14 @@ import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -54,7 +56,7 @@ class UserServiceImplTest {
         createUserRequest.setId(1L);
         createUserRequest.setFirstName("Ouwesh");
         createUserRequest.setLastName("Seeroo");
-        createUserRequest.setGender(UserCreateUpdateRequestApiBean.GenderEnum.MALE);
+        createUserRequest.setGender(GenderEnumApiBean.MALE);
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
         when(userRepository.save(userEntity)).thenReturn(userEntity);
@@ -161,7 +163,7 @@ class UserServiceImplTest {
     @Test
     void testFindAllUsers() {
         String criteria = "Seeroo";
-        String gender = "MALE";
+        GenderEnumApiBean gender = GenderEnumApiBean.MALE;
         int page = 0;
         int size = 10;
         PageRequest pageRequest = PageRequest.of(page, size);

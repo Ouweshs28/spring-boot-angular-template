@@ -1,5 +1,6 @@
 package com.project.template.service;
 
+import com.project.template.model.GenderEnumApiBean;
 import com.project.template.model.PageApiBean;
 import com.project.template.model.UserCreateUpdateRequestApiBean;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +18,6 @@ public interface UserService {
 
     UserCreateUpdateRequestApiBean findUserById(Long userId);
 
-    PageApiBean findAllUsers(String criteria, String gender, PageRequest pageRequest);
+    PageApiBean findAllUsers(String criteria, GenderEnumApiBean gender, PageRequest pageRequest);
 
 }

@@ -2,6 +2,7 @@ package com.project.template.rest;
 
 
 import com.project.template.api.ApiApi;
+import com.project.template.model.GenderEnumApiBean;
 import com.project.template.model.PageApiBean;
 import com.project.template.model.UserCreateUpdateRequestApiBean;
 import com.project.template.service.UserService;
@@ -51,7 +52,7 @@ public class UserController implements ApiApi {
     }
 
     @Override
-    public ResponseEntity<PageApiBean> findAllUsers(String criteria, String gender, Integer pageNumber, Integer pageSize, String sortOrder, String sortBy) {
+    public ResponseEntity<PageApiBean> findAllUsers(String criteria, GenderEnumApiBean gender, Integer pageNumber, Integer pageSize, String sortOrder, String sortBy) {
         Sort sort = Sort.by("DESC".equalsIgnoreCase(sortOrder) ? DESC : ASC, sortBy == null ? "firstName" : sortBy);
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sort);
         return ResponseEntity.ok(userService.findAllUsers(criteria, gender, pageRequest));

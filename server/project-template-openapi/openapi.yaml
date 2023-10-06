@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.0.3
 info:
   description: Api Documentation
   version: '1.0'
@@ -130,8 +130,7 @@ components:
         lastName:
           type: string
         gender:
-          enum: [ MALE,FEMALE ]
-          type: string
+          $ref: '#/components/schemas/GenderEnum'
     Page:
       type: object
       properties:
@@ -160,6 +159,11 @@ components:
           items:
             anyOf:
               - $ref: '#/components/schemas/UserCreateUpdateRequest'
+    GenderEnum:
+      type: string
+      enum:
+        - MALE
+        - FEMALE
   parameters:
     UserId:
       name: userId
@@ -218,5 +222,4 @@ components:
       required: false
       in: query
       schema:
-        enum: [ MALE,FEMALE ]
-        type: string
+        $ref: '#/components/schemas/GenderEnum'

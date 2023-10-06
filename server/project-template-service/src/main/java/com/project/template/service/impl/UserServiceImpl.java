@@ -3,6 +3,7 @@ package com.project.template.service.impl;
 import com.project.template.exception.ResourceNotFoundException;
 import com.project.template.mapper.PageMapper;
 import com.project.template.mapper.UserMapper;
+import com.project.template.model.GenderEnumApiBean;
 import com.project.template.model.PageApiBean;
 import com.project.template.model.UserCreateUpdateRequestApiBean;
 import com.project.template.persistence.entity.UserEntity;
@@ -10,7 +11,6 @@ import com.project.template.persistence.enumeration.GenderEnum;
 import com.project.template.persistence.repository.UserRepository;
 import com.project.template.service.UserService;
 import com.querydsl.core.BooleanBuilder;
-import org.apache.commons.lang3.EnumUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageApiBean findAllUsers(String criteria, String gender, PageRequest pageRequest) {
+    public PageApiBean findAllUsers(String criteria, GenderEnumApiBean gender, PageRequest pageRequest) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if (Objects.nonNull(criteria)) {
@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
                     or(userEntity.lastName.concat(" ").concat(userEntity.firstName).containsIgnoreCase(criteria));
         }
 
-        if (EnumUtils.isValidEnum(GenderEnum.class, gender)) {
-            predicate.and(userEntity.gender.eq(GenderEnum.valueOf(gender)));
+        if (Objects.nonNull(gender)) {
+            predicate.and(userEntity.gender.eq(GenderEnum.valueOf(gender.name())));
         }
 
         Page<UserEntity> result = userRepository.findAll(predicate, pageRequest);
