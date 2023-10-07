@@ -25,7 +25,6 @@
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 		<querydsl.version>5.0.0</querydsl.version>
 		<jjwt.version>0.9.1</jjwt.version>
-		<jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
 		<commons-lang3.version>3.12.0</commons-lang3.version>
 	</properties>
 
