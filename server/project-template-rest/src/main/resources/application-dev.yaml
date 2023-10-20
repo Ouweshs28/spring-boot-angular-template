@@ -3,6 +3,8 @@ spring:
     url: jdbc:h2:mem:project-template
     username: root
     password:
-  h2:
-    console:
-      enabled: true
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    url: openapi.yaml

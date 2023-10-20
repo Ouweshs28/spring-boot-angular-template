@@ -6,8 +6,10 @@ import com.project.template.mapper.UserMapper;
 import com.project.template.model.GenderEnumApiBean;
 import com.project.template.model.PageApiBean;
 import com.project.template.model.UserCreateUpdateRequestApiBean;
+import com.project.template.model.UserResponseApiBean;
 import com.project.template.persistence.entity.UserEntity;
 import com.project.template.persistence.enumeration.GenderEnum;
+import com.project.template.persistence.enumeration.RoleEnum;
 import com.project.template.persistence.repository.UserRepository;
 import com.querydsl.core.BooleanBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,13 +18,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,11 +41,14 @@ class UserServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
-    @Spy
+    @Mock
     private UserMapper userMapper;
 
-    @Spy
+    @Mock
     private PageMapper pageMapper;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserServiceImpl userServiceImpl;
@@ -136,28 +141,28 @@ class UserServiceImplTest {
 
     @Test
     void findUserByIdWhenExist() {
-        UserCreateUpdateRequestApiBean expectedUser = new UserCreateUpdateRequestApiBean();
+        UserResponseApiBean expectedUser = new UserResponseApiBean();
         expectedUser.setId(1L);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(new UserEntity()));
-        when(userMapper.mapToUserCreateOrUpdateRequest(any(UserEntity.class))).thenReturn(expectedUser);
+        when(userMapper.mapToUserResponse(any(UserEntity.class))).thenReturn(expectedUser);
 
-        UserCreateUpdateRequestApiBean actualUser = userServiceImpl.findUserById(expectedUser.getId());
+        UserResponseApiBean actualUser = userServiceImpl.findUserById(expectedUser.getId());
 
         assertEquals(expectedUser, actualUser);
         verify(userRepository).findById(expectedUser.getId());
-        verify(userMapper).mapToUserCreateOrUpdateRequest(any(UserEntity.class));
+        verify(userMapper).mapToUserResponse(any(UserEntity.class));
     }
 
     @Test
     void findUserByIdWhenDoesNotExist() {
-        UserCreateUpdateRequestApiBean expectedUser = new UserCreateUpdateRequestApiBean();
+        UserResponseApiBean expectedUser = new UserResponseApiBean();
         expectedUser.setId(1L);
         when(userRepository.findById(anyLong())).thenThrow(new ResourceNotFoundException("UserId :" + expectedUser.getId() + " not found"));
-        when(userMapper.mapToUserCreateOrUpdateRequest(any(UserEntity.class))).thenReturn(expectedUser);
+        when(userMapper.mapToUserResponse(any(UserEntity.class))).thenReturn(expectedUser);
 
         assertThrows(ResourceNotFoundException.class, () -> userServiceImpl.findUserById(expectedUser.getId()));
         verify(userRepository).findById(expectedUser.getId());
-        verify(userMapper, never()).mapToUserCreateOrUpdateRequest(any(UserEntity.class));
+        verify(userMapper, never()).mapToUserResponse(any(UserEntity.class));
     }
 
     @Test
@@ -169,8 +174,8 @@ class UserServiceImplTest {
         PageRequest pageRequest = PageRequest.of(page, size);
 
         List<UserEntity> userList = Arrays.asList(
-                new UserEntity(1L, "Ouwesh", "Seeroo", GenderEnum.MALE),
-                new UserEntity(3L, "Shaad", "Seeroo", GenderEnum.MALE)
+                new UserEntity(1L, "ouweshs28", "password", "ouweshseeroo@gmail.com", "Ouwesh", "Seeroo", GenderEnum.MALE, RoleEnum.USER),
+                new UserEntity(3L, "shaad28", "password", "shaadseeroo@gmail.com", "Shaad", "Seeroo", GenderEnum.MALE, RoleEnum.USER)
         );
         Page<UserEntity> pageResult = new PageImpl<>(userList, pageRequest, userList.size());
 

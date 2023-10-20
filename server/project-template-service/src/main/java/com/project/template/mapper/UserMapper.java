@@ -1,6 +1,7 @@
 package com.project.template.mapper;
 
 import com.project.template.model.UserCreateUpdateRequestApiBean;
+import com.project.template.model.UserResponseApiBean;
 import com.project.template.persistence.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,6 +17,8 @@ public interface UserMapper {
     UserEntity mapToUserEntity(UserCreateUpdateRequestApiBean createUserRequest);
 
     UserCreateUpdateRequestApiBean mapToUserCreateOrUpdateRequest(UserEntity user);
+
+    UserResponseApiBean mapToUserResponse(UserEntity user);
 
     void mapToUpdateUserEntity(@MappingTarget UserEntity user, UserCreateUpdateRequestApiBean userUpdateRequest);
 

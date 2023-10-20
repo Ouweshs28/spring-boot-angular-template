@@ -1,15 +1,16 @@
 package com.project.template.rest;
 
 
-import com.project.template.api.ApiApi;
+import com.project.template.api.UserApi;
 import com.project.template.model.GenderEnumApiBean;
 import com.project.template.model.PageApiBean;
 import com.project.template.model.UserCreateUpdateRequestApiBean;
+import com.project.template.model.UserResponseApiBean;
 import com.project.template.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.data.domain.Sort.Direction.ASC;
@@ -19,14 +20,10 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
  * @author Ouweshs28
  */
 @RestController
-@Transactional
-public class UserController implements ApiApi {
+@RequiredArgsConstructor
+public class UserController implements UserApi {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public ResponseEntity<Long> createUser(UserCreateUpdateRequestApiBean userCreateRequestApiBean) {
@@ -47,7 +44,7 @@ public class UserController implements ApiApi {
     }
 
     @Override
-    public ResponseEntity<UserCreateUpdateRequestApiBean> findUserById(Long userId) {
+    public ResponseEntity<UserResponseApiBean> findUserById(Long userId) {
         return ResponseEntity.ok(userService.findUserById(userId));
     }
 
