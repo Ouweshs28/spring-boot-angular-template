@@ -33,6 +33,8 @@ paths:
           description: Forbidden
         404:
           description: Not Found
+      security:
+        - bearerAuth: [ ]
     put:
       tags:
         - user
@@ -54,6 +56,8 @@ paths:
           description: User not found
         405:
           description: Validation exception
+      security:
+        - bearerAuth: [ ]
     get:
       tags:
         - user
@@ -78,6 +82,8 @@ paths:
           description: Unauthorized
         403:
           description: Forbidden
+      security:
+        - bearerAuth: [ ]
   /api/users/{userId}:
     delete:
       tags:
@@ -96,6 +102,8 @@ paths:
           description: Forbidden
         404:
           description: Not Found
+      security:
+        - bearerAuth: [ ]
     get:
       tags:
         - user
@@ -110,14 +118,77 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreateUpdateRequest'
+                $ref: '#/components/schemas/UserResponse'
         401:
           description: Unauthorized
         403:
           description: Forbidden
         404:
           description: Not Found
+      security:
+        - bearerAuth: [ ]
+  /api/auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register a user
+      operationId: registerUser
+      description: register a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateRequest'
+      responses:
+        200:
+          description: OK
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                example: 1
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+        409:
+          description: Already exists
+  /api/auth/authenticate:
+    post:
+      tags:
+        - auth
+      summary: Login a user
+      operationId: loginUser
+      description: login a user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     UserCreateUpdateRequest:
       type: object
@@ -125,12 +196,52 @@ components:
         id:
           type: integer
           format: int64
+        username:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+          format: email
         firstName:
           type: string
         lastName:
           type: string
         gender:
           $ref: '#/components/schemas/GenderEnum'
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+    AuthenticationRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    AuthenticationResponse:
+      type: object
+      properties:
+        token:
+          type: string
     Page:
       type: object
       properties:
@@ -158,12 +269,17 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: '#/components/schemas/UserCreateUpdateRequest'
+              - $ref: '#/components/schemas/UserResponse'
     GenderEnum:
       type: string
       enum:
         - MALE
         - FEMALE
+    RoleEnum:
+      type: string
+      enum:
+        - ADMIN
+        - USER
   parameters:
     UserId:
       name: userId

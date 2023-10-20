@@ -22,7 +22,7 @@
 		<org.projectlombok.version>1.18.24</org.projectlombok.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<querydsl.version>5.0.0</querydsl.version>
-		<jjwt.version>0.9.1</jjwt.version>
+		<jjwt.version>0.12.2</jjwt.version>
 		<jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
 		<commons-lang3.version>3.13.0</commons-lang3.version>
 		<swagger-annotations.version>2.2.16</swagger-annotations.version>
@@ -86,7 +86,9 @@
 								<generateApiTests>false</generateApiTests>
 								<generateApiDocumentation>false</generateApiDocumentation>
 								<generatorName>spring</generatorName>
-								<inputSpec>${project.basedir}/../project-template-openapi/openapi.yaml</inputSpec>
+								<inputSpec>
+									${project.basedir}/../project-template-rest/src/main/resources/static/openapi.yaml
+								</inputSpec>
 								<modelPackage>com.project.template.model</modelPackage>
 								<modelNameSuffix>ApiBean</modelNameSuffix>
 								<generateModels>false</generateModels>
