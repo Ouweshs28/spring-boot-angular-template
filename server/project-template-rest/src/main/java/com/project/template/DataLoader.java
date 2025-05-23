@@ -26,11 +26,11 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
 
-        UserEntity userOuwesh = new UserEntity(1L, "Ouwesh", "Seeroo", MALE);
-        UserEntity userSam = new UserEntity(2L, "Sam", "Johnstone", MALE);
-        UserEntity userRick = new UserEntity(3L, "Rick", "Allan", MALE);
-        UserEntity userHanaa = new UserEntity(4L, "Hanaa", "Azeria", FEMALE);
-        UserEntity userSara = new UserEntity(5L, "Sara", "Johnstone", FEMALE);
+        UserEntity userOuwesh = new UserEntity(null, "Ouwesh", "Seeroo", MALE);
+        UserEntity userSam = new UserEntity(null, "Sam", "Johnstone", MALE);
+        UserEntity userRick = new UserEntity(null, "Rick", "Allan", MALE);
+        UserEntity userHanaa = new UserEntity(null, "Hanaa", "Azeria", FEMALE);
+        UserEntity userSara = new UserEntity(null, "Sara", "Johnstone", FEMALE);
 
         userRepository.saveAll(List.of(userOuwesh, userSam, userRick, userHanaa, userSara));
     }
