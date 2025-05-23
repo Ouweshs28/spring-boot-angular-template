@@ -8,3 +8,6 @@ springdoc:
     enabled: false
   swagger-ui:
     url: openapi.yaml
+logging:
+  level:
+    .org.springframework.web: DEBUG

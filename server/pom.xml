@@ -14,12 +14,12 @@
 
 	<properties>
 		<build.final-name>project-template</build.final-name>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.release>21</maven.compiler.release>
+		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<org.openapi-generator-maven-plugin.version>6.5.0</org.openapi-generator-maven-plugin.version>
-		<org.projectlombok.version>1.18.24</org.projectlombok.version>
+		<org.projectlombok.version>1.18.38</org.projectlombok.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<querydsl.version>5.0.0</querydsl.version>
 		<jjwt.version>0.12.2</jjwt.version>
@@ -56,6 +56,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.14.0</version>
+
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
