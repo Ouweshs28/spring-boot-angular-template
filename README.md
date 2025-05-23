@@ -33,7 +33,7 @@ includes the following features:
 
 ## Getting Started
 
-To run the project, you will need to have Java 17 and Maven 3 installed. Then, you can run the following command from
+To run the project, you will need to have Java 21 and Maven 3 installed. Then, you can run the following command from
 the root directory of the project:
 
     mvn clean install
