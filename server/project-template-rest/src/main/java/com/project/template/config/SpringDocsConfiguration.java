@@ -1,7 +1,6 @@
 package com.project.template.config;
 
 import org.springdoc.core.configuration.SpringDocConfiguration;
-import org.springdoc.core.configuration.SpringDocUIConfiguration;
 import org.springdoc.core.properties.SpringDocConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springdoc.core.providers.ObjectMapperProvider;
@@ -31,8 +30,4 @@ public class SpringDocsConfiguration {
         return new ObjectMapperProvider(springDocConfigProperties);
     }
 
-    @Bean
-    SpringDocUIConfiguration springDocUIConfiguration(Optional<SwaggerUiConfigProperties> optionalSwaggerUiConfigProperties) {
-        return new SpringDocUIConfiguration(optionalSwaggerUiConfigProperties);
-    }
 }
