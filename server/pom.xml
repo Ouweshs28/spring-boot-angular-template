@@ -19,13 +19,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<org.openapi-generator-maven-plugin.version>6.5.0</org.openapi-generator-maven-plugin.version>
-		<org.projectlombok.version>1.18.38</org.projectlombok.version>
-		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
+		<org.projectlombok.version>1.18.42</org.projectlombok.version>
+		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 		<querydsl.version>5.0.0</querydsl.version>
 		<jjwt.version>0.12.2</jjwt.version>
 		<jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
 		<commons-lang3.version>3.13.0</commons-lang3.version>
-		<swagger-annotations.version>2.2.16</swagger-annotations.version>
+		<swagger-annotations.version>2.2.41</swagger-annotations.version>
 		<springdoc-openapi-starter-webmvc-ui.version>2.2.0</springdoc-openapi-starter-webmvc-ui.version>
 	</properties>
 
@@ -56,7 +56,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.14.0</version>
+				<version>3.14.1</version>
 
 			</plugin>
 			<plugin>

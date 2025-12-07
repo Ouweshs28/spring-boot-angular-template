@@ -5,7 +5,8 @@ import com.project.template.exception.ResourceNotFoundException;
 import com.project.template.persistence.entity.UserEntity;
 import com.project.template.persistence.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -43,8 +44,7 @@ public class TemplateConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

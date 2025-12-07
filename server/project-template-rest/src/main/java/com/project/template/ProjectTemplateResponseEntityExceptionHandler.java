@@ -3,13 +3,13 @@ package com.project.template;
 import com.project.template.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+import org.springframework.boot.webmvc.error.ErrorAttributes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -63,7 +63,7 @@ public class ProjectTemplateResponseEntityExceptionHandler extends ResponseEntit
         return Objects.requireNonNull(super.handleExceptionInternal(ex, body, headers, httpStatus, request));
     }
 
-    private ResponseEntity<Object> handleExceptionInternal(Exception ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    private ResponseEntity<Object> handleExceptionInternal(Exception ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return this.handleExceptionInternal(ex, null, headers, status, request);
     }
 
