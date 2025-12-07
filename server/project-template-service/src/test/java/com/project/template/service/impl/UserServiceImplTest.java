@@ -14,8 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,13 +24,9 @@ import java.util.Optional;
 
 import static com.project.template.persistence.enumeration.GenderEnum.MALE;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-;
-
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 class UserServiceImplTest {
 
     @Mock
@@ -52,10 +46,9 @@ class UserServiceImplTest {
         createUserRequest.setId(1L);
         createUserRequest.setFirstName("Ouwesh");
         createUserRequest.setLastName("Seeroo");
-        createUserRequest.setGenderEnum(MALE);
+        createUserRequest.setGender(MALE);
         UserEntity userEntity = new UserEntity();
         userEntity.setId(1L);
-        when(userRepository.save(userEntity)).thenReturn(userEntity);
     }
 
     @Test
@@ -94,8 +87,6 @@ class UserServiceImplTest {
         userEntity.setId(2L);
 
         when(userRepository.findById(anyLong())).thenThrow(new ResourceNotFoundException("UserId :" + userEntity.getId() + " not found"));
-        doNothing().when(userMapper).mapToUpdateUserEntity(any(UserEntity.class), eq(updateUserRequest));
-        when(userRepository.save(any(UserEntity.class))).thenReturn(userEntity);
 
         assertThrows(ResourceNotFoundException.class, () -> userServiceImpl.updateUser(updateUserRequest));
 
@@ -123,7 +114,6 @@ class UserServiceImplTest {
         userEntity.setId(1L);
 
         when(userRepository.findById(anyLong())).thenThrow(new ResourceNotFoundException("UserId :" + userEntity.getId() + " not found"));
-        doNothing().when(userRepository).deleteById(anyLong());
 
         assertThrows(ResourceNotFoundException.class, () -> userServiceImpl.deleteUser(userEntity.getId()));
         verify(userRepository).findById(userEntity.getId());
@@ -149,7 +139,6 @@ class UserServiceImplTest {
         CreateUpdateUserRequest expectedUser = new CreateUpdateUserRequest();
         expectedUser.setId(1L);
         when(userRepository.findById(anyLong())).thenThrow(new ResourceNotFoundException("UserId :" + expectedUser.getId() + " not found"));
-        when(userMapper.mapToUserCreateOrUpdateRequest(any(UserEntity.class))).thenReturn(expectedUser);
 
         assertThrows(ResourceNotFoundException.class, () -> userServiceImpl.findUserById(expectedUser.getId()));
         verify(userRepository).findById(expectedUser.getId());
