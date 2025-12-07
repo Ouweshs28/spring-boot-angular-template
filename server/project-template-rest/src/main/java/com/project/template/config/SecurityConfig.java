@@ -20,12 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    protected static final String[] ALLOWED_URLS = {"/api/auth/**", "swagger-ui/**", "/v3/api-docs/**", "/openapi.yaml"};
+    protected static final String[] ALLOWED_URLS = {"/api/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/openapi.yaml"};
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                         .requestMatchers(ALLOWED_URLS)

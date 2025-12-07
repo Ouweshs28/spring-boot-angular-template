@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(UserCreateUpdateRequestApiBean userUpdateRequest) {
         UserEntity user = userRepository.findById(userUpdateRequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userUpdateRequest.getId())));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_ID_NOT_FOUND.formatted(userUpdateRequest.getId())));
         userUpdateRequest.setPassword(passwordEncoder.encode(userUpdateRequest.getPassword()));
         userMapper.mapToUpdateUserEntity(user, userUpdateRequest);
         userRepository.save(user);
@@ -59,14 +59,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_ID_NOT_FOUND.formatted(userId)));
         userRepository.deleteById(userId);
     }
 
     @Override
     public UserResponseApiBean findUserById(Long userId) {
         return userRepository.findById(userId).map(userMapper::mapToUserResponse)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_ID_NOT_FOUND.formatted(userId)));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Username :%s not found", username)));
+                .orElseThrow(() -> new ResourceNotFoundException("Username :%s not found".formatted(username)));
     }
 
 }
