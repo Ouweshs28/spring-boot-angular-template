@@ -17,6 +17,6 @@ public class CreateUpdateUserRequest {
 
     private String lastName;
 
-    private GenderEnum genderEnum;
+    private GenderEnum gender;
 
 }

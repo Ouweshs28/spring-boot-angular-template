@@ -3,6 +3,7 @@ package com.project.template.rest;
 
 import com.project.template.dto.CreateUpdateUserRequest;
 import com.project.template.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createUser(CreateUpdateUserRequest userCreateRequest) {
+    public ResponseEntity<Void> createUser(@Valid @RequestBody CreateUpdateUserRequest userCreateRequest) {
         Long createdUserId = userService.createUser(userCreateRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("{id}")
@@ -48,7 +49,7 @@ public class UserController {
 
 
     @PutMapping
-    public ResponseEntity<Void> updateUser(CreateUpdateUserRequest userCreateRequest) {
+    public ResponseEntity<Void> updateUser(@Valid  @RequestBody CreateUpdateUserRequest userCreateRequest) {
         userService.updateUser(userCreateRequest);
         return ResponseEntity.noContent().build();
     }

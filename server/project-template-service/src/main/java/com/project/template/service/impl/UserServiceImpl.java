@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(CreateUpdateUserRequest userUpdateRequest) {
         UserEntity user = userRepository.findById(userUpdateRequest.getId())
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userUpdateRequest.getId())));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_ID_NOT_FOUND.formatted(userUpdateRequest.getId())));
         userMapper.mapToUpdateUserEntity(user, userUpdateRequest);
         userRepository.save(user);
     }
@@ -50,14 +50,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_ID_NOT_FOUND.formatted(userId)));
         userRepository.deleteById(userId);
     }
 
     @Override
     public CreateUpdateUserRequest findUserById(Long userId) {
         return userRepository.findById(userId).map(userMapper::mapToUserCreateOrUpdateRequest)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(USER_ID_NOT_FOUND, userId)));
+                .orElseThrow(() -> new ResourceNotFoundException(USER_ID_NOT_FOUND.formatted(userId)));
     }
 
     @Override
